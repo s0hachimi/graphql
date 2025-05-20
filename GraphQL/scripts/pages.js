@@ -16,11 +16,22 @@ let USER = {
     country: "",
 }
 
+let skillLevels = []
+
+async function getSkillLevels() {
+    const skill = await profileAPI(querys.skill)
+    const result = skill.user[0].transactions.reduce((acc, c) => {
+        acc[c.type] = c.amount
+        return acc
+    }, {})
+
+    skillLevels.push(result)
+}
+
 
 async function insertUser() {
 
     const dataUser = await profileAPI(querys.user)
-    console.log(dataUser);
 
     USER.id = dataUser.user[0].id
     USER.username = dataUser.user[0].login
@@ -44,6 +55,8 @@ async function insertUser() {
 
 
 export async function showProfile() {
+
+    // user information
 
     await insertUser()
 
@@ -103,9 +116,9 @@ export async function showProfile() {
     let MXP = ""
 
     if (p > 1000) {
-        MXP = `${p.toFixed(2) / 100} MB`  
+        MXP = `${p.toFixed(2) / 100} MB`
     } else {
-         MXP = `${p.toFixed(2)} KB` 
+        MXP = `${p.toFixed(2)} KB`
     }
 
     const stat = document.createElement("div")
@@ -126,7 +139,7 @@ export async function showProfile() {
     </div>
     `
 
-     statXP.innerHTML = `
+    statXP.innerHTML = `
       <div class="stat">
             
       <div class="xp"> 
@@ -142,9 +155,55 @@ export async function showProfile() {
 
 
 
+    // skill Levels 
 
-    document.body.append(grid)
-    // log out !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+    await getSkillLevels()
+
+    console.log(skillLevels);
+
+    const skillContainer = document.createElement("div")
+    skillContainer.setAttribute("class", "skill-container")
+
+    const objSkill = Object.entries(skillLevels[0])
+    console.log(objSkill);
+    
+    const divSkill = document.createElement("div")
+    divSkill.setAttribute("class", "div-skill")
+
+    objSkill.forEach(skill => {
+
+
+        const type = document.createElement("p")
+        const amount = document.createElement("p")
+        type.textContent = skill[0].split("_")[1]
+        amount.textContent = `${skill[1]}%`
+
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+        svg.setAttribute('width', '25')
+        svg.setAttribute('height', `${skill[1]}%`)
+
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+        rect.setAttribute('width', `25`)
+        rect.setAttribute('height', `${skill[1]}%`)
+        rect.setAttribute('fill', 'green')
+
+        svg.appendChild(rect)
+
+
+        const skillBar = document.createElement("div")
+        skillBar.setAttribute("class", "skill-bar")
+
+        skillBar.append(amount, svg, type)
+
+        divSkill.appendChild(skillBar)
+
+        skillContainer.appendChild(divSkill)
+    })
+
+
+
+    document.body.append(grid, skillContainer)
+    // log out 
 
     const log_out = document.querySelector(".log-out")
     log_out.addEventListener("click", () => {

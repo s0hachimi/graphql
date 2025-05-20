@@ -1,6 +1,6 @@
 export const querys = {
 
-  user: `
+    user: `
 {
   user {
     id
@@ -17,7 +17,7 @@ export const querys = {
 }
 `,
 
-  level: `{
+    level: `{
         transaction(
             where: {
                 type: { _eq: "level" }
@@ -30,7 +30,7 @@ export const querys = {
         }
     }`,
 
-  xp: `{
+    xp: `{
         transaction_aggregate(
             where: {
                 type: { _eq: "xp" }
@@ -44,6 +44,16 @@ export const querys = {
         }
         }
     }`,
+
+    skill: `{
+         user {
+            transactions(where: {type: {_like: "skill%"}}) {
+                type
+                amount
+            }
+        }
+    }
+    `
 
 
 

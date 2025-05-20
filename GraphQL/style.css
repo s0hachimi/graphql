@@ -90,15 +90,6 @@ span {
     text-align: center;
 }
 
-.info-side h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.info-side p {
-    font-size: 16px;
-}
-
 .login-form {
     flex: 1;
     padding: 50px;
@@ -191,6 +182,7 @@ label {
     color: #1f2937;
     margin: 8px 0;
     transition: 0.5s;
+    cursor: default;
 }
 
 .user-info p:hover {
@@ -245,6 +237,28 @@ label {
     box-shadow: 0 0 10px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
+.div-skill {
+    background-color: #228dff;
+    width: 900px;
+    height: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  
+    padding: 20px;
+}
+
+.skill-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 590px;
+}
+
+.skill-bar {
+    width: 25px;
+    height: 500px;
+}
 
 @media screen and (max-width: 768px) {
     .log-container {
